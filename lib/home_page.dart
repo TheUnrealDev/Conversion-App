@@ -1,16 +1,9 @@
+import 'package:conversion_app/conversion_page.dart';
+import 'package:conversion_app/page.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key, required this.title});
-
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
 
   final String title;
 
@@ -19,6 +12,11 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  List<PageData> pageData = [
+    PageData(title: "Temperature", icon: Icons.thermostat_outlined),
+    PageData(title: "Volume", icon: Icons.coffee_rounded),
+    PageData(title: "Length", icon: Icons.height),
+  ];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -51,9 +49,37 @@ class _HomePageState extends State<HomePage> {
             ),
           ),
           Expanded(
-            flex: 8,
-            child: ListView.builder(itemBuilder: (context, int index) {
+              flex: 8,
+              child: ListView.builder(
+                  itemCount: pageData.length,
+                  itemBuilder: (context, int index) {
+                    PageData pageInfo = pageData[index];
+                    return ListTile(
+                      onTap: () => {
+                        Navigator.push(context,
+                            MaterialPageRoute(builder: (context) {
+                          return ConversionPage(
+                              title: pageInfo.title, icon: pageInfo.icon);
+                        }))
+                      },
+                      leading: Icon(
+                        pageInfo.icon,
+                        color: Theme.of(context).primaryColorDark,
+                        size: 40,
+                      ),
+                      title: Text(
+                        pageInfo.title,
+                        style: TextStyle(
+                          color: Theme.of(context).primaryColor,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                      contentPadding: const EdgeInsets.all(15),
+                    );
+                  })
+              /*child: ListView.builder(itemBuilder: (context, int index) {
               return ListTile(
+                onTap: () => {Navigator.push(context, ConversionPage())},
                 leading: Icon(
                   Icons.thermostat_outlined,
                   color: Theme.of(context).primaryColorDark,
@@ -68,8 +94,8 @@ class _HomePageState extends State<HomePage> {
                 ),
                 contentPadding: const EdgeInsets.all(15),
               );
-            }),
-          ),
+            }),*/
+              ),
         ],
       ),
     );
