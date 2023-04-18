@@ -1,4 +1,4 @@
-import 'package:conversion_app/temperature_page.dart';
+import 'package:conversion_app/own_widgets/temperature_page.dart';
 import 'package:flutter/material.dart';
 
 class ConversionPage extends StatefulWidget {
@@ -38,11 +38,17 @@ class _ConversionPageState extends State<ConversionPage> {
                 children: [
                   Padding(
                     padding: const EdgeInsets.only(left: 20),
-                    child: Icon(widget.icon, size: 35),
+                    child: Hero(
+                      tag: "${widget.title} icon",
+                      child: Icon(widget.icon, size: 35),
+                    ),
                   ),
-                  Text(
-                    widget.title,
-                    style: const TextStyle(fontSize: 30),
+                  Hero(
+                    tag: "${widget.title} tssitle FIX",
+                    child: Text(
+                      widget.title,
+                      style: const TextStyle(fontSize: 30),
+                    ),
                   ),
                 ],
               ),

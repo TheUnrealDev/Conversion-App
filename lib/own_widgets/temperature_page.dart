@@ -8,10 +8,17 @@ class TemperaturePage extends StatefulWidget {
 }
 
 class _TemperaturePageState extends State<TemperaturePage> {
+  final GlobalKey _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: Colors.white,
+    return Padding(
+      padding: const EdgeInsets.all(8),
+      child: Form(
+        key: _formKey,
+        child: Container(
+          color: Colors.orange,
+        ),
+      ),
     );
   }
 }
