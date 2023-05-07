@@ -1,5 +1,5 @@
-import 'package:conversion_app/own_widgets/temperature_page.dart';
 import 'package:flutter/material.dart';
+import 'conversion_pages/temperature_page.dart';
 
 class ConversionPage extends StatefulWidget {
   final String title;
@@ -31,24 +31,28 @@ class _ConversionPageState extends State<ConversionPage> {
           Expanded(
             flex: 1,
             child: Container(
-              padding: const EdgeInsets.all(8),
-              color: Theme.of(context).secondaryHeaderColor,
+              decoration: BoxDecoration(
+                color: Theme.of(context).canvasColor,
+                boxShadow: [
+                  BoxShadow(
+                    color: Theme.of(context).primaryColor,
+                    blurRadius: 5,
+                  ),
+                ],
+              ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Padding(
-                    padding: const EdgeInsets.only(left: 20),
+                    padding: const EdgeInsets.only(left: 20, right: 5),
                     child: Hero(
                       tag: "${widget.title} icon",
                       child: Icon(widget.icon, size: 35),
                     ),
                   ),
-                  Hero(
-                    tag: "${widget.title} tssitle FIX",
-                    child: Text(
-                      widget.title,
-                      style: const TextStyle(fontSize: 30),
-                    ),
+                  Text(
+                    widget.title,
+                    style: const TextStyle(fontSize: 30),
                   ),
                 ],
               ),

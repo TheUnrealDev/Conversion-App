@@ -1,5 +1,5 @@
 import 'package:conversion_app/pages/conversion_page.dart';
-import 'package:conversion_app/page.dart';
+import 'package:conversion_app/page_data.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {
@@ -16,6 +16,11 @@ class _HomePageState extends State<HomePage> {
     PageData(title: "Temperature", icon: Icons.thermostat_outlined),
     PageData(title: "Volume", icon: Icons.coffee_rounded),
     PageData(title: "Length", icon: Icons.height),
+    PageData(title: "Energy", icon: Icons.bolt),
+    PageData(title: "Velocity", icon: Icons.speed),
+    PageData(title: "Mass", icon: Icons.scale),
+    PageData(title: "Area", icon: Icons.square_outlined),
+    PageData(title: "Time", icon: Icons.alarm),
   ];
   @override
   Widget build(BuildContext context) {
@@ -80,7 +85,7 @@ class _HomePageState extends State<HomePage> {
                       ),
                     ),
                   ),
-                  contentPadding: const EdgeInsets.all(15),
+                  contentPadding: const EdgeInsets.all(20),
                 );
               },
             ),
