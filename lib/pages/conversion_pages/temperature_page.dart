@@ -1,22 +1,12 @@
-import 'package:flutter/material.dart';
+import 'package:conversion_app/unit_converter.dart';
 import 'package:select_form_field/select_form_field.dart';
+import 'package:conversion_app/number_validator.dart';
+import '../../units.dart';
+import 'package:flutter/material.dart';
 
-const List<Map<String, dynamic>> _units = [
-  {
-    'value': 'celsius',
-    'label': 'Celsius (C°)',
-  },
-  {
-    'value': 'fahrenheit',
-    'label': 'Fahrenheit (F°)',
-  },
-  {
-    'value': 'kelvin',
-    'label': 'Kelvin (K°)',
-  },
-];
+const String unitType = 'temperature';
 
-const TextStyle _drowdownTextStyle = TextStyle(fontSize: 20);
+final List<Map<String, dynamic>> _units = getUnitInfoMapOfType(unitType);
 
 class TemperaturePage extends StatefulWidget {
   const TemperaturePage({super.key});
@@ -26,10 +16,14 @@ class TemperaturePage extends StatefulWidget {
 }
 
 class _TemperaturePageState extends State<TemperaturePage> {
-  final GlobalKey _formKey = GlobalKey<FormState>();
+  final _formKey = GlobalKey<FormState>();
 
-  String _fromUnit = 'celsius';
-  String _toUnit = 'kelvin';
+  final TextStyle _dropdownTextStyle = const TextStyle(fontSize: 20);
+  final _valueToConvertController = TextEditingController();
+
+  String _fromUnit = _units.isEmpty ? '' : _units.elementAt(0)['value'];
+  String _toUnit = _units.length < 2 ? '' : _units.elementAt(1)['value'];
+  String _convertedUnitString = '';
 
   void swapToAndFromUnits() {
     setState(
@@ -41,8 +35,49 @@ class _TemperaturePageState extends State<TemperaturePage> {
     );
   }
 
+  void setFromUnit(String newUnit) {
+    setState(() {
+      _fromUnit = newUnit;
+    });
+  }
+
+  void setToUnit(String newUnit) {
+    setState(() {
+      _toUnit = newUnit;
+    });
+  }
+
+  void convertChosenUnits() {
+    double valueToConvert = double.parse(_valueToConvertController.text);
+    double? convertedValue = convertUnits(_fromUnit, _toUnit, valueToConvert);
+
+    String displayString = "There was an error with your conversion!";
+    if (convertedValue != null) {
+      displayString = '$convertedValue ${getUnitSuffixFromName(_toUnit)}';
+    }
+
+    setState(
+      () {
+        _convertedUnitString = displayString;
+      },
+    );
+  }
+
+  void validateFormAndConvert() {
+    if (_formKey.currentState == null) {
+      return;
+    }
+    bool isValidForm = _formKey.currentState!.validate();
+    if (!isValidForm) {
+      return;
+    }
+    convertChosenUnits();
+  }
+
   @override
   Widget build(BuildContext context) {
+    validateFormAndConvert();
+
     return Padding(
       padding: const EdgeInsets.all(10),
       child: Form(
@@ -58,23 +93,30 @@ class _TemperaturePageState extends State<TemperaturePage> {
                     child: Column(
                       children: [
                         SelectFormField(
-                          style: _drowdownTextStyle,
-                          labelText: 'From:',
+                          style: _dropdownTextStyle,
+                          labelText: "From",
                           controller: TextEditingController(text: _fromUnit),
-                          onChanged: (newValue) {
-                            _fromUnit = newValue;
-                          },
+                          onChanged: setFromUnit,
                           items: _units,
+                        ),
+                        TextFormField(
+                          key: const Key('ValueToConvert'),
+                          validator: NumberValidator.validateNumber,
+                          controller: _valueToConvertController,
+                          decoration: const InputDecoration(
+                              hintText: 'Input your number.'),
+                          onChanged: (value) {
+                            validateFormAndConvert();
+                          },
                         ),
                         SelectFormField(
-                          style: _drowdownTextStyle,
-                          labelText: 'To:',
+                          style: _dropdownTextStyle,
+                          labelText: "To",
                           controller: TextEditingController(text: _toUnit),
-                          onChanged: (newValue) {
-                            _toUnit = newValue;
-                          },
+                          onChanged: setToUnit,
                           items: _units,
                         ),
+                        Text(_convertedUnitString),
                       ],
                     ),
                   ),
