@@ -86,6 +86,11 @@ class _ConversionFormState extends State<ConversionForm> {
 
   @override
   Widget build(BuildContext context) {
+    final Icon drowDownSuffix = Icon(
+      Icons.arrow_drop_down,
+      color: Theme.of(context).primaryColor,
+    );
+
     validateFormAndConvert();
 
     return Padding(
@@ -105,6 +110,7 @@ class _ConversionFormState extends State<ConversionForm> {
                         SelectFormField(
                           enabled: widget.units.isNotEmpty,
                           style: _dropdownTextStyle,
+                          decoration: InputDecoration(suffix: drowDownSuffix),
                           labelText: "From",
                           controller: TextEditingController(text: _fromUnit),
                           onChanged: setFromUnit,
@@ -122,6 +128,7 @@ class _ConversionFormState extends State<ConversionForm> {
                         SelectFormField(
                           enabled: widget.units.isNotEmpty,
                           style: _dropdownTextStyle,
+                          decoration: InputDecoration(suffix: drowDownSuffix),
                           labelText: "To",
                           controller: TextEditingController(text: _toUnit),
                           onChanged: setToUnit,
