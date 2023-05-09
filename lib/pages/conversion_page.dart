@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
-import 'conversion_pages/temperature_page.dart';
+import 'conversion_pages/conversion_form.dart';
 
 class ConversionPage extends StatefulWidget {
+  final String tag;
   final String title;
   final IconData icon;
-  const ConversionPage({super.key, required this.title, required this.icon});
+  const ConversionPage(
+      {super.key, required this.tag, required this.title, required this.icon});
 
   @override
   State<ConversionPage> createState() => _ConversionPageState();
@@ -13,14 +15,7 @@ class ConversionPage extends StatefulWidget {
 class _ConversionPageState extends State<ConversionPage> {
   @override
   Widget build(BuildContext context) {
-    Widget pageContent;
-    switch (widget.title) {
-      case "Temperature":
-        pageContent = const TemperaturePage();
-        break;
-      default:
-        pageContent = Container();
-    }
+    Widget pageContent = ConversionForm(unitType: widget.tag);
 
     return Scaffold(
       resizeToAvoidBottomInset: false,

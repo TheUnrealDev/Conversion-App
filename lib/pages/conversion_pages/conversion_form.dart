@@ -1,28 +1,32 @@
+import 'dart:math';
+
 import 'package:conversion_app/unit_converter.dart';
 import 'package:select_form_field/select_form_field.dart';
 import 'package:conversion_app/number_validator.dart';
 import '../../units.dart';
 import 'package:flutter/material.dart';
 
-const String unitType = 'temperature';
-
-final List<Map<String, dynamic>> _units = getUnitInfoMapOfType(unitType);
-
-class TemperaturePage extends StatefulWidget {
-  const TemperaturePage({super.key});
+class ConversionForm extends StatefulWidget {
+  final String unitType;
+  final List<Map<String, dynamic>> units;
+  ConversionForm({super.key, required this.unitType})
+      : units = getUnitInfoMapOfType(unitType);
 
   @override
-  State<TemperaturePage> createState() => _TemperaturePageState();
+  State<ConversionForm> createState() => _ConversionFormState();
 }
 
-class _TemperaturePageState extends State<TemperaturePage> {
+class _ConversionFormState extends State<ConversionForm> {
   final _formKey = GlobalKey<FormState>();
 
   final TextStyle _dropdownTextStyle = const TextStyle(fontSize: 20);
+  final TextStyle _resultTextStyle = const TextStyle(fontSize: 20);
   final _valueToConvertController = TextEditingController();
 
-  String _fromUnit = _units.isEmpty ? '' : _units.elementAt(0)['value'];
-  String _toUnit = _units.length < 2 ? '' : _units.elementAt(1)['value'];
+  late String _fromUnit =
+      widget.units.isEmpty ? '' : widget.units.elementAt(0)['value'];
+  late String _toUnit =
+      widget.units.length < 2 ? '' : widget.units.elementAt(1)['value'];
   String _convertedUnitString = '';
 
   void swapToAndFromUnits() {
@@ -53,7 +57,13 @@ class _TemperaturePageState extends State<TemperaturePage> {
 
     String displayString = "There was an error with your conversion!";
     if (convertedValue != null) {
-      displayString = '$convertedValue ${getUnitSuffixFromName(_toUnit)}';
+      String resultString;
+      if (convertedValue > pow(10, 5)) {
+        resultString = convertedValue.toStringAsExponential();
+      } else {
+        resultString = convertedValue.toString();
+      }
+      displayString = '$resultString ${getUnitSuffixFromName(_toUnit)}';
     }
 
     setState(
@@ -93,14 +103,14 @@ class _TemperaturePageState extends State<TemperaturePage> {
                     child: Column(
                       children: [
                         SelectFormField(
+                          enabled: widget.units.isNotEmpty,
                           style: _dropdownTextStyle,
                           labelText: "From",
                           controller: TextEditingController(text: _fromUnit),
                           onChanged: setFromUnit,
-                          items: _units,
+                          items: widget.units,
                         ),
                         TextFormField(
-                          key: const Key('ValueToConvert'),
                           validator: NumberValidator.validateNumber,
                           controller: _valueToConvertController,
                           decoration: const InputDecoration(
@@ -110,13 +120,13 @@ class _TemperaturePageState extends State<TemperaturePage> {
                           },
                         ),
                         SelectFormField(
+                          enabled: widget.units.isNotEmpty,
                           style: _dropdownTextStyle,
                           labelText: "To",
                           controller: TextEditingController(text: _toUnit),
                           onChanged: setToUnit,
-                          items: _units,
+                          items: widget.units,
                         ),
-                        Text(_convertedUnitString),
                       ],
                     ),
                   ),
@@ -129,6 +139,43 @@ class _TemperaturePageState extends State<TemperaturePage> {
                   )
                 ],
               ),
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 40),
+                child: Visibility(
+                  visible: _convertedUnitString.isNotEmpty &&
+                      _valueToConvertController.text.isNotEmpty,
+                  child: Row(
+                    children: [
+                      Expanded(
+                        flex: 4,
+                        child: Text(
+                          '${_valueToConvertController.text} ${getUnitSuffixFromName(_fromUnit)}',
+                          textAlign: TextAlign.right,
+                          style: _resultTextStyle,
+                        ),
+                      ),
+                      Expanded(
+                        flex: 1,
+                        child: Text(
+                          '=',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                              fontSize: 40,
+                              color: Theme.of(context).primaryColor),
+                        ),
+                      ),
+                      Expanded(
+                        flex: 4,
+                        child: Text(
+                          _convertedUnitString,
+                          textAlign: TextAlign.left,
+                          style: _resultTextStyle,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              )
             ],
           ),
         ),

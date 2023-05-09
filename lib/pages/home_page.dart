@@ -2,6 +2,49 @@ import 'package:conversion_app/pages/conversion_page.dart';
 import 'package:conversion_app/page_data.dart';
 import 'package:flutter/material.dart';
 
+List<PageData> pageDataList = [
+  PageData(
+    tag: 'temperature',
+    title: 'Temperature',
+    icon: Icons.thermostat_outlined,
+  ),
+  PageData(
+    tag: 'volume',
+    title: 'Volume',
+    icon: Icons.coffee_rounded,
+  ),
+  PageData(
+    tag: 'distance',
+    title: 'Distance',
+    icon: Icons.height,
+  ),
+  PageData(
+    tag: 'energy',
+    title: 'Energy',
+    icon: Icons.bolt,
+  ),
+  PageData(
+    tag: 'velocity',
+    title: 'Velocity',
+    icon: Icons.speed,
+  ),
+  PageData(
+    tag: 'mass',
+    title: 'Mass',
+    icon: Icons.scale,
+  ),
+  PageData(
+    tag: 'area',
+    title: 'Area',
+    icon: Icons.square_outlined,
+  ),
+  PageData(
+    tag: 'time',
+    title: 'Time',
+    icon: Icons.alarm,
+  ),
+];
+
 class HomePage extends StatefulWidget {
   const HomePage({super.key, required this.title});
 
@@ -12,16 +55,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  List<PageData> pageData = [
-    PageData(title: "Temperature", icon: Icons.thermostat_outlined),
-    PageData(title: "Volume", icon: Icons.coffee_rounded),
-    PageData(title: "Length", icon: Icons.height),
-    PageData(title: "Energy", icon: Icons.bolt),
-    PageData(title: "Velocity", icon: Icons.speed),
-    PageData(title: "Mass", icon: Icons.scale),
-    PageData(title: "Area", icon: Icons.square_outlined),
-    PageData(title: "Time", icon: Icons.alarm),
-  ];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -56,16 +89,21 @@ class _HomePageState extends State<HomePage> {
           Expanded(
             flex: 8,
             child: ListView.builder(
-              itemCount: pageData.length,
+              itemCount: pageDataList.length,
               itemBuilder: (context, int index) {
-                PageData pageInfo = pageData[index];
+                PageData pageInfo = pageDataList[index];
                 return ListTile(
                   onTap: () => {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) {
-                      return ConversionPage(
-                          title: pageInfo.title, icon: pageInfo.icon);
-                    }))
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) {
+                        return ConversionPage(
+                          tag: pageInfo.tag,
+                          title: pageInfo.title,
+                          icon: pageInfo.icon,
+                        );
+                      }),
+                    )
                   },
                   leading: Hero(
                     tag: "${pageInfo.title} icon",
