@@ -1,18 +1,20 @@
+import 'temperature_unit.dart';
+
 import 'unit.dart';
 
 final List<Unit> _unitList = [
-  Unit(unitType: 'temperature', name: 'Celsius', suffix: 'C°'),
-  Unit(unitType: 'temperature', name: 'Kelvin', suffix: 'K°'),
-  Unit(unitType: 'temperature', name: 'Fahrenheit', suffix: 'F°'),
-  Unit(unitType: 'distance', name: 'Meter', suffix: 'm'),
-  Unit(unitType: 'distance', name: 'Decimeter', suffix: 'dm'),
-  Unit(unitType: 'mass', name: 'Kilogram', suffix: 'kg'),
+  TemperatureUnit(name: 'Celsius', suffix: 'C°'),
+  TemperatureUnit(name: 'Kelvin', suffix: 'K°'),
+  TemperatureUnit(name: 'Fahrenheit', suffix: 'F°'),
+  //Unit(unitType: 'distance', name: 'Meter', suffix: 'm'),
+  // Unit(unitType: 'distance', name: 'Decimeter', suffix: 'dm'),
+  // Unit(unitType: 'mass', name: 'Kilogram', suffix: 'kg'),
 ];
 
 List<Unit> _getUnitsOfType(String unitType) {
   List<Unit> unitsOfType = [];
   for (Unit unit in _unitList) {
-    if (unit.unitType == unitType) {
+    if (unit.getUnitType() == unitType) {
       unitsOfType.add(unit);
     }
   }
@@ -33,22 +35,24 @@ List<Map<String, dynamic>> getUnitInfoMapOfType(String unitType) {
   return unitsInfo;
 }
 
-String getUnitTypeFromName(String unitName) {
-  String unitType = '';
-  for (Unit unit in _unitList) {
-    if (unit.name == unitName) {
-      unitType = unit.unitType;
-    }
-  }
-  return unitType;
-}
-
 String getUnitSuffixFromName(String unitName) {
   String unitSuffix = '';
   for (Unit unit in _unitList) {
     if (unit.name == unitName) {
       unitSuffix = unit.suffix;
+      break;
     }
   }
   return unitSuffix;
+}
+
+Unit? getUnitFromName(String unitName) {
+  Unit? foundUnit;
+  for (Unit unit in _unitList) {
+    if (unit.name == unitName) {
+      foundUnit = unit;
+      break;
+    }
+  }
+  return foundUnit;
 }

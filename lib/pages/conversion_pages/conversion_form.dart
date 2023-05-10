@@ -1,9 +1,7 @@
-import 'dart:math';
-
 import 'package:conversion_app/unit_converter.dart';
 import 'package:select_form_field/select_form_field.dart';
 import 'package:conversion_app/number_validator.dart';
-import '../../units.dart';
+import '../../units/units.dart';
 import 'package:flutter/material.dart';
 
 class ConversionForm extends StatefulWidget {
@@ -58,7 +56,7 @@ class _ConversionFormState extends State<ConversionForm> {
     String displayString = "There was an error with your conversion!";
     if (convertedValue != null) {
       String resultString;
-      if (convertedValue > pow(10, 5)) {
+      if (convertedValue >= 1e5) {
         resultString = convertedValue.toStringAsExponential();
       } else {
         resultString = convertedValue.toString();
