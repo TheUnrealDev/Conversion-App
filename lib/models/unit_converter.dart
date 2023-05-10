@@ -20,10 +20,10 @@ double? convertUnits(
   Unit? fromUnit = getUnitFromName(fromUnitName);
   if (fromUnit != null) {
     convertedValue = fromUnit.convertTo(toUnitName, originalValue);
-    //Fix rounding of numbers to ignore leading zeros after decimal sign. Ex. 0.00000315
+    //Fix rounding of numbers to ignore leading zeros after decimal sign. Ex. 0.00000315 or 2.53e65
 
     if (convertedValue != null) {
-      convertedValue = roundToNumDecimals(convertedValue, 8);
+      convertedValue = roundToNumDecimals(convertedValue, 12);
     }
   }
 

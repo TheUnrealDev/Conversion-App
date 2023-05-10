@@ -56,7 +56,7 @@ class _ConversionFormState extends State<ConversionForm> {
     String displayString = "There was an error with your conversion!";
     if (convertedValue != null) {
       String resultString;
-      if (convertedValue >= 1e5) {
+      if (convertedValue >= 1e6) {
         resultString = convertedValue.toStringAsExponential();
       } else {
         resultString = convertedValue.toString();
@@ -149,33 +149,24 @@ class _ConversionFormState extends State<ConversionForm> {
                 child: Visibility(
                   visible: _convertedUnitString.isNotEmpty &&
                       _valueToConvertController.text.isNotEmpty,
-                  child: Row(
+                  child: Column(
                     children: [
-                      Expanded(
-                        flex: 4,
-                        child: Text(
-                          '${_valueToConvertController.text} ${getUnitSuffixFromName(_fromUnit)}',
-                          textAlign: TextAlign.right,
-                          style: _resultTextStyle,
-                        ),
+                      Text(
+                        '${_valueToConvertController.text} ${getUnitSuffixFromName(_fromUnit)}',
+                        textAlign: TextAlign.right,
+                        style: _resultTextStyle,
                       ),
-                      Expanded(
-                        flex: 1,
-                        child: Text(
-                          '=',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                              fontSize: 40,
-                              color: Theme.of(context).primaryColor),
-                        ),
+                      Text(
+                        '=',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                            fontSize: 40,
+                            color: Theme.of(context).primaryColor),
                       ),
-                      Expanded(
-                        flex: 4,
-                        child: Text(
-                          _convertedUnitString,
-                          textAlign: TextAlign.left,
-                          style: _resultTextStyle,
-                        ),
+                      Text(
+                        _convertedUnitString,
+                        textAlign: TextAlign.left,
+                        style: _resultTextStyle,
                       ),
                     ],
                   ),
