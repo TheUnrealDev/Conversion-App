@@ -4,42 +4,42 @@ import 'package:flutter/material.dart';
 
 List<PageData> pageDataList = [
   PageData(
-    tag: 'temperature',
+    unitType: 'temperature',
     title: 'Temperature',
     icon: Icons.thermostat_outlined,
   ),
   PageData(
-    tag: 'volume',
+    unitType: 'volume',
     title: 'Volume',
     icon: Icons.coffee_rounded,
   ),
   PageData(
-    tag: 'distance',
+    unitType: 'distance',
     title: 'Distance',
     icon: Icons.height,
   ),
   PageData(
-    tag: 'energy',
+    unitType: 'energy',
     title: 'Energy',
     icon: Icons.bolt,
   ),
   PageData(
-    tag: 'velocity',
+    unitType: 'velocity',
     title: 'Velocity',
     icon: Icons.speed,
   ),
   PageData(
-    tag: 'mass',
+    unitType: 'mass',
     title: 'Mass',
     icon: Icons.scale,
   ),
   PageData(
-    tag: 'area',
+    unitType: 'area',
     title: 'Area',
     icon: Icons.square_outlined,
   ),
   PageData(
-    tag: 'time',
+    unitType: 'time',
     title: 'Time',
     icon: Icons.alarm,
   ),
@@ -98,7 +98,7 @@ class _HomePageState extends State<HomePage> {
                       context,
                       MaterialPageRoute(builder: (context) {
                         return ConversionPage(
-                          tag: pageInfo.tag,
+                          unitType: pageInfo.unitType,
                           title: pageInfo.title,
                           icon: pageInfo.icon,
                         );

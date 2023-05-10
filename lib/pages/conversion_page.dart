@@ -2,11 +2,14 @@ import 'package:flutter/material.dart';
 import 'conversion_pages/conversion_form.dart';
 
 class ConversionPage extends StatefulWidget {
-  final String tag;
+  final String unitType;
   final String title;
   final IconData icon;
   const ConversionPage(
-      {super.key, required this.tag, required this.title, required this.icon});
+      {super.key,
+      required this.unitType,
+      required this.title,
+      required this.icon});
 
   @override
   State<ConversionPage> createState() => _ConversionPageState();
@@ -15,7 +18,7 @@ class ConversionPage extends StatefulWidget {
 class _ConversionPageState extends State<ConversionPage> {
   @override
   Widget build(BuildContext context) {
-    Widget pageContent = ConversionForm(unitType: widget.tag);
+    Widget pageContent = ConversionForm(unitType: widget.unitType);
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
