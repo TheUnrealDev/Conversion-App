@@ -1,3 +1,4 @@
+import 'distance_unit.dart';
 import 'temperature_unit.dart';
 
 import 'unit.dart';
@@ -16,6 +17,18 @@ final List<Unit> _unitList = [
   VolumeUnit(name: 'Pint - US', suffix: 'pints'),
   VolumeUnit(name: 'Gallon - US', suffix: 'gallons'),
   VolumeUnit(name: 'Ounce - US', suffix: 'fl. oz.'),
+  DistanceUnit(name: 'meter', suffix: 'm'),
+  DistanceUnit(name: 'decimeter', suffix: 'dm'),
+  DistanceUnit(name: 'centimeter', suffix: 'cm'),
+  DistanceUnit(name: 'millimeter', suffix: 'mm'),
+  DistanceUnit(name: 'micrometer', suffix: 'μm'),
+  DistanceUnit(name: 'nanometer', suffix: 'nm'),
+  DistanceUnit(name: 'picometer', suffix: 'pm'),
+  DistanceUnit(name: 'kilometer', suffix: 'km'),
+  DistanceUnit(name: 'mile', suffix: 'miles'),
+  DistanceUnit(name: 'yard', suffix: 'yards'),
+  DistanceUnit(name: 'foot', suffix: 'feet'),
+  DistanceUnit(name: 'inch', suffix: 'inches'),
 ];
 
 List<Unit> _getUnitsOfType(String unitType) {

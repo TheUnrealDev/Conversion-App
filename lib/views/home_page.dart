@@ -1,5 +1,5 @@
-import 'package:conversion_app/pages/conversion_page.dart';
-import 'package:conversion_app/page_data.dart';
+import 'package:conversion_app/views/conversion_page.dart';
+import 'package:conversion_app/models/page_data.dart';
 import 'package:flutter/material.dart';
 
 List<PageData> pageDataList = [

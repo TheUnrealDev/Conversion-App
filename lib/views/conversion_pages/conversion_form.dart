@@ -1,7 +1,7 @@
-import 'package:conversion_app/unit_converter.dart';
+import 'package:conversion_app/models/unit_converter.dart';
 import 'package:select_form_field/select_form_field.dart';
-import 'package:conversion_app/number_validator.dart';
-import '../../units/units.dart';
+import 'package:conversion_app/models/number_validator.dart';
+import '../../models/units/units.dart';
 import 'package:flutter/material.dart';
 
 class ConversionForm extends StatefulWidget {

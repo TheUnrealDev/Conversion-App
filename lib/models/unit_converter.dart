@@ -12,13 +12,18 @@ double roundToNumDecimals(double number, int numDigits) {
 double? convertUnits(
     String fromUnitName, String toUnitName, double originalValue) {
   double? convertedValue;
+
+  if (fromUnitName == toUnitName) {
+    return originalValue;
+  }
+
   Unit? fromUnit = getUnitFromName(fromUnitName);
   if (fromUnit != null) {
     convertedValue = fromUnit.convertTo(toUnitName, originalValue);
     //Fix rounding of numbers to ignore leading zeros after decimal sign. Ex. 0.00000315
 
     if (convertedValue != null) {
-      convertedValue = roundToNumDecimals(convertedValue, 12);
+      convertedValue = roundToNumDecimals(convertedValue, 8);
     }
   }
 

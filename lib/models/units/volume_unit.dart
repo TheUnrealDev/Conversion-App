@@ -1,4 +1,4 @@
-import 'package:conversion_app/units/unit.dart';
+import 'package:conversion_app/models/units/unit.dart';
 
 class VolumeUnit extends Unit {
   static const String unitType = 'volume';
@@ -7,10 +7,6 @@ class VolumeUnit extends Unit {
 
   @override
   double? convertTo(String toUnit, double originalValue) {
-    if (name == toUnit) {
-      return originalValue;
-    }
-
     double? cubicMeterValue;
     switch (name) {
       case 'Cubic meter':
