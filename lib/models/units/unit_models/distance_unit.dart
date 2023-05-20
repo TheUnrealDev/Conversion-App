@@ -1,6 +1,5 @@
-
-import 'package:conversion_app/models/calc_utilites/precision_calculations.dart';
-import 'package:conversion_app/models/units/unit.dart';
+import '../../calc_utilites/precision_calculations.dart';
+import '../unit.dart';
 
 class DistanceUnit extends Unit {
   static const String unitType = 'distance';

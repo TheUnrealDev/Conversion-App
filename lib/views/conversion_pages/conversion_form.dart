@@ -1,8 +1,8 @@
-import 'package:conversion_app/models/unit_converter.dart';
-import 'package:select_form_field/select_form_field.dart';
-import 'package:conversion_app/models/number_validator.dart';
-import '../../models/units/units.dart';
 import 'package:flutter/material.dart';
+import 'package:select_form_field/select_form_field.dart';
+import '../../models/number_validator.dart';
+import '../../models/unit_converter.dart';
+import '../../models/units/units.dart';
 
 class ConversionForm extends StatefulWidget {
   final String unitType;
@@ -49,6 +49,18 @@ class _ConversionFormState extends State<ConversionForm> {
     });
   }
 
+  bool shouldBeNotation(double convertedAbsValue) {
+    bool shouldBeNotation = false;
+
+    if (convertedAbsValue >= 1e6) {
+      shouldBeNotation = true;
+    } else if (convertedAbsValue > 0 && convertedAbsValue < 1e-6) {
+      shouldBeNotation = true;
+    }
+
+    return shouldBeNotation;
+  }
+
   void convertChosenUnits() {
     double valueToConvert = double.parse(_valueToConvertController.text);
     double? convertedValue = convertUnits(_fromUnit, _toUnit, valueToConvert);
@@ -56,7 +68,7 @@ class _ConversionFormState extends State<ConversionForm> {
     String displayString = "There was an error with your conversion!";
     if (convertedValue != null) {
       String resultString;
-      if (convertedValue >= 1e6) {
+      if (shouldBeNotation(convertedValue.abs())) {
         resultString = convertedValue.toStringAsExponential();
       } else {
         resultString = convertedValue.toString();

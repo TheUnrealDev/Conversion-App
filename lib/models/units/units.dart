@@ -1,8 +1,11 @@
 import 'unit_list/distance_list.dart';
 import 'unit_list/energy_list.dart';
+import 'unit_list/mass_list.dart';
 import 'unit_list/velocity_list.dart';
 import 'unit_list/volume_list.dart';
 import 'unit_list/temperature_list.dart';
+import 'unit_list/area_list.dart';
+import 'unit_list/time_list.dart';
 
 import 'unit.dart';
 
@@ -14,6 +17,9 @@ void initializeUnits() {
   _unitList.addAll(volumeUnits);
   _unitList.addAll(energyUnits);
   _unitList.addAll(velocityUnits);
+  _unitList.addAll(massUnits);
+  _unitList.addAll(areaUnits);
+  _unitList.addAll(timeUnits);
 }
 
 List<Unit> _getUnitsOfType(String unitType) {

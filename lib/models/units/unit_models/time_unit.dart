@@ -1,10 +1,10 @@
 import '../../calc_utilites/precision_calculations.dart';
 import '../unit.dart';
 
-class VelocityUnit extends Unit {
-  static const String unitType = 'velocity';
+class TimeUnit extends Unit {
+  static const String unitType = 'time';
 
-  VelocityUnit(
+  TimeUnit(
       {required super.name, required super.suffix, required super.toSIMult});
 
   @override
