@@ -1,5 +1,4 @@
 import 'package:conversion_app/models/units/unit.dart';
-import 'package:flutter/material.dart';
 
 import '../calc_utilites/precision_calculations.dart';
 

@@ -1,7 +1,5 @@
 import 'dart:math';
 
-import 'package:flutter/material.dart';
-
 import 'scientific_notation.dart';
 
 double preciseMult(double originalValue, double otherValue) {
