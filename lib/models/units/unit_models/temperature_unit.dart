@@ -1,4 +1,4 @@
-import 'package:conversion_app/models/units/unit.dart';
+import '../unit.dart';
 
 class TemperatureUnit extends Unit {
   static const String unitType = 'temperature';
