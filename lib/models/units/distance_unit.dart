@@ -6,7 +6,7 @@ class DistanceUnit extends Unit {
   DistanceUnit({required super.name, required super.suffix});
 
   @override
-  double? convertTo(String toUnit, double originalValue) {
+  double? convertTo(Unit toUnit, double originalValue) {
     double? meterValue;
     switch (name) {
       case 'meter':
@@ -49,7 +49,7 @@ class DistanceUnit extends Unit {
 
     double? convertedValue;
     if (meterValue != null) {
-      switch (toUnit) {
+      switch (toUnit.name) {
         case 'meter':
           convertedValue = meterValue;
           break;
@@ -75,16 +75,16 @@ class DistanceUnit extends Unit {
           convertedValue = meterValue * 1e12;
           break;
         case 'mile':
-          convertedValue = meterValue * 0.0006213712;
+          convertedValue = meterValue * (1 / 1609.344);
           break;
         case 'yard':
-          convertedValue = meterValue * 1.0936132983;
+          convertedValue = meterValue * (1 / 0.9144);
           break;
         case 'foot':
-          convertedValue = meterValue * 3.280839895;
+          convertedValue = meterValue * (1 / 0.3048);
           break;
         case 'inch':
-          convertedValue = meterValue * 39.37007874015748031496062992;
+          convertedValue = meterValue * (1 / 0.0254);
           break;
       }
     }

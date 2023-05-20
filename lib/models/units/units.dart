@@ -1,8 +1,8 @@
-import 'distance_unit.dart';
-import 'temperature_unit.dart';
-
 import 'unit.dart';
 import 'volume_unit.dart';
+import 'distance_unit.dart';
+import 'temperature_unit.dart';
+import 'energy_unit.dart';
 
 final List<Unit> _unitList = [
   TemperatureUnit(name: 'Celsius', suffix: 'C°'),
@@ -29,6 +29,19 @@ final List<Unit> _unitList = [
   DistanceUnit(name: 'yard', suffix: 'yards'),
   DistanceUnit(name: 'foot', suffix: 'feet'),
   DistanceUnit(name: 'inch', suffix: 'inches'),
+  EnergyUnit(name: 'Joule', suffix: 'J'),
+  EnergyUnit(name: 'Newton-meter', suffix: 'Nm'),
+  EnergyUnit(name: 'Kilojoule', suffix: 'kJ'),
+  EnergyUnit(name: 'Millijoule', suffix: 'mJ'),
+  EnergyUnit(name: 'Microjoule', suffix: 'μJ'),
+  EnergyUnit(name: 'Nanojoule', suffix: 'nJ'),
+  EnergyUnit(name: 'Attojoule', suffix: 'aJ'),
+  EnergyUnit(name: 'Kilocalorie', suffix: 'kcal'),
+  EnergyUnit(name: 'Calorie', suffix: 'cal'),
+  EnergyUnit(name: 'Kilowatt-hour', suffix: 'kWh'),
+  EnergyUnit(name: 'Watt-hour', suffix: 'Wh'),
+  EnergyUnit(name: 'Foot-pound', suffix: 'ft lb'),
+  EnergyUnit(name: 'Ton - Explosives', suffix: 'ton'),
 ];
 
 List<Unit> _getUnitsOfType(String unitType) {

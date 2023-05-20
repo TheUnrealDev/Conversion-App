@@ -6,7 +6,7 @@ class VolumeUnit extends Unit {
   VolumeUnit({required super.name, required super.suffix});
 
   @override
-  double? convertTo(String toUnit, double originalValue) {
+  double? convertTo(Unit toUnit, double originalValue) {
     double? cubicMeterValue;
     switch (name) {
       case 'Cubic meter':
@@ -27,20 +27,20 @@ class VolumeUnit extends Unit {
       case 'Cubic inch':
         cubicMeterValue = originalValue * 1.6387064E-5;
         break;
-      case 'Pint':
+      case 'Pint - US':
         cubicMeterValue = originalValue * 0.0004731765;
         break;
-      case 'Gallon':
+      case 'Gallon - US':
         cubicMeterValue = originalValue * 0.0037854118;
         break;
       case 'Ounce - US':
-        cubicMeterValue = originalValue * 2.95735295641118e-5;
+        cubicMeterValue = originalValue * (1 / 33814.022701843);
         break;
     }
 
     double? convertedValue;
     if (cubicMeterValue != null) {
-      switch (toUnit) {
+      switch (toUnit.name) {
         case 'Cubic meter':
           convertedValue = cubicMeterValue;
           break;
@@ -57,16 +57,16 @@ class VolumeUnit extends Unit {
           convertedValue = cubicMeterValue * 1e9;
           break;
         case 'Cubic inch':
-          convertedValue = cubicMeterValue * 61023.744094732;
+          convertedValue = cubicMeterValue * (1 / 1.6387064E-5);
           break;
         case 'Pint - US':
-          convertedValue = cubicMeterValue * 2113.3764188652;
+          convertedValue = cubicMeterValue * (1 / 0.0004731765);
           break;
         case 'Gallon - US':
-          convertedValue = cubicMeterValue * 264.1720523581;
+          convertedValue = cubicMeterValue * (1 / 0.0037854118);
           break;
         case 'Ounce - US':
-          convertedValue = cubicMeterValue * 33814.0227;
+          convertedValue = cubicMeterValue * 33814.022701843;
           break;
       }
     }

@@ -108,6 +108,9 @@ class _ConversionFormState extends State<ConversionForm> {
                         SelectFormField(
                           enabled: widget.units.isNotEmpty,
                           style: _dropdownTextStyle,
+                          type: widget.units.length <= 8
+                              ? SelectFormFieldType.dropdown
+                              : SelectFormFieldType.dialog,
                           decoration: InputDecoration(suffix: drowDownSuffix),
                           labelText: "From",
                           controller: TextEditingController(text: _fromUnit),
@@ -126,6 +129,9 @@ class _ConversionFormState extends State<ConversionForm> {
                         SelectFormField(
                           enabled: widget.units.isNotEmpty,
                           style: _dropdownTextStyle,
+                          type: widget.units.length <= 8
+                              ? SelectFormFieldType.dropdown
+                              : SelectFormFieldType.dialog,
                           decoration: InputDecoration(suffix: drowDownSuffix),
                           labelText: "To",
                           controller: TextEditingController(text: _toUnit),

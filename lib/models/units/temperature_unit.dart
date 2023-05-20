@@ -6,7 +6,7 @@ class TemperatureUnit extends Unit {
   TemperatureUnit({required super.name, required super.suffix});
 
   @override
-  double? convertTo(String toUnit, double originalValue) {
+  double? convertTo(Unit toUnit, double originalValue) {
     double? celsiusValue;
     switch (name) {
       case 'Celsius':
@@ -22,7 +22,7 @@ class TemperatureUnit extends Unit {
 
     double? convertedValue;
     if (celsiusValue != null) {
-      switch (toUnit) {
+      switch (toUnit.name) {
         case 'Celsius':
           convertedValue = celsiusValue;
           break;

@@ -4,7 +4,7 @@ abstract class Unit {
 
   Unit({required this.name, required this.suffix});
 
-  double? convertTo(String toUnit, double originalValue);
+  double? convertTo(Unit toUnit, double originalValue);
 
   String getUnitType();
 }
