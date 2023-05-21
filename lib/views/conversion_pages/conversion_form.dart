@@ -7,8 +7,10 @@ import '../../models/units/units.dart';
 class ConversionForm extends StatefulWidget {
   final String unitType;
   final List<Map<String, dynamic>> units;
+  final List<Map<String, dynamic>> precisionsInfo;
   ConversionForm({super.key, required this.unitType})
-      : units = getUnitInfoMapOfType(unitType);
+      : units = getUnitInfoMapOfType(unitType),
+        precisionsInfo = getPrecisionsInfoMap();
 
   @override
   State<ConversionForm> createState() => _ConversionFormState();
@@ -20,11 +22,15 @@ class _ConversionFormState extends State<ConversionForm> {
   final TextStyle _dropdownTextStyle = const TextStyle(fontSize: 20);
   final TextStyle _resultTextStyle = const TextStyle(fontSize: 20);
   final _valueToConvertController = TextEditingController();
+  final _significantFigureController = TextEditingController(
+    text: getDefaultPrecision().toString(),
+  );
 
   late String _fromUnit =
       widget.units.isEmpty ? '' : widget.units.elementAt(0)['value'];
   late String _toUnit =
       widget.units.length < 2 ? '' : widget.units.elementAt(1)['value'];
+
   String _convertedUnitString = '';
 
   void swapToAndFromUnits() {
@@ -54,7 +60,7 @@ class _ConversionFormState extends State<ConversionForm> {
 
     if (convertedAbsValue >= 1e6) {
       shouldBeNotation = true;
-    } else if (convertedAbsValue > 0 && convertedAbsValue < 1e-6) {
+    } else if (convertedAbsValue > 0 && convertedAbsValue < 1e-4) {
       shouldBeNotation = true;
     }
 
@@ -62,8 +68,10 @@ class _ConversionFormState extends State<ConversionForm> {
   }
 
   void convertChosenUnits() {
+    int significantFigures = int.parse(_significantFigureController.text);
     double valueToConvert = double.parse(_valueToConvertController.text);
-    double? convertedValue = convertUnits(_fromUnit, _toUnit, valueToConvert);
+    double? convertedValue =
+        convertUnits(_fromUnit, _toUnit, valueToConvert, significantFigures);
 
     String displayString = "There was an error with your conversion!";
     if (convertedValue != null) {
@@ -135,7 +143,7 @@ class _ConversionFormState extends State<ConversionForm> {
                           decoration: const InputDecoration(
                               hintText: 'Input your number.'),
                           onChanged: (value) {
-                            validateFormAndConvert();
+                            setState(() {});
                           },
                         ),
                         SelectFormField(
@@ -162,16 +170,16 @@ class _ConversionFormState extends State<ConversionForm> {
                   )
                 ],
               ),
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 40),
-                child: Visibility(
-                  visible: _convertedUnitString.isNotEmpty &&
-                      _valueToConvertController.text.isNotEmpty,
+              Visibility(
+                visible: _convertedUnitString.isNotEmpty &&
+                    _valueToConvertController.text.isNotEmpty,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 30),
                   child: Column(
                     children: [
                       Text(
                         '${_valueToConvertController.text} ${getUnitSuffixFromName(_fromUnit)}',
-                        textAlign: TextAlign.right,
+                        textAlign: TextAlign.center,
                         style: _resultTextStyle,
                       ),
                       Text(
@@ -189,7 +197,22 @@ class _ConversionFormState extends State<ConversionForm> {
                     ],
                   ),
                 ),
-              )
+              ),
+              Container(
+                margin: const EdgeInsets.symmetric(horizontal: 100),
+                child: SelectFormField(
+                  decoration: InputDecoration(
+                      labelText: 'Significant Figures', suffix: drowDownSuffix),
+                  type: widget.units.length <= 8
+                      ? SelectFormFieldType.dropdown
+                      : SelectFormFieldType.dialog,
+                  items: widget.precisionsInfo,
+                  controller: _significantFigureController,
+                  onChanged: (value) {
+                    setState(() {});
+                  },
+                ),
+              ),
             ],
           ),
         ),
