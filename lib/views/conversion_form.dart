@@ -7,9 +7,11 @@ import '../models/units/units.dart';
 
 class ConversionForm extends StatefulWidget {
   final String unitType;
+  final Function updateUsageCallback;
   final List<Map<String, dynamic>> units;
   final List<Map<String, dynamic>> precisionsInfo;
-  ConversionForm({super.key, required this.unitType})
+  ConversionForm(
+      {super.key, required this.unitType, required this.updateUsageCallback})
       : units = getUnitInfoMapOfType(unitType),
         precisionsInfo = getPrecisionsInfoMap();
 
@@ -111,7 +113,8 @@ class _ConversionFormState extends State<ConversionForm> {
       SharedPreferences prefs = await _prefs;
       int conversionCount = prefs.getInt(widget.unitType) ?? 0;
       prefs.setInt(widget.unitType, conversionCount + 1);
-      debugPrint((conversionCount + 1).toString());
+
+      widget.updateUsageCallback(widget.unitType, conversionCount + 1);
     }
     _previousNumberVal = newValue;
   }

@@ -46,6 +46,8 @@ List<PageData> pageDataList = [
   ),
 ];
 
+late Map<PageData, int> pageUsage;
+
 class HomePage extends StatefulWidget {
   const HomePage({super.key, required this.title});
 
@@ -59,20 +61,28 @@ class _HomePageState extends State<HomePage> {
   final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
 
   bool isLoading = true;
+  int _highestConversionCount = 0;
 
   Future<Map<PageData, int>> loadPageUsage() async {
     SharedPreferences prefs = await _prefs;
 
-    Map<PageData, int> pageUsage = Map();
+    Map<PageData, int> pageUsageFromPrefs = Map();
     for (PageData pageData in pageDataList) {
       int timesUsed = prefs.getInt(pageData.unitType) ?? 0;
-      pageUsage[pageData] = timesUsed;
+
+      if (timesUsed > _highestConversionCount) {
+        _highestConversionCount = timesUsed;
+      }
+
+      pageUsageFromPrefs[pageData] = timesUsed;
     }
-    return pageUsage;
+    return pageUsageFromPrefs;
   }
 
-  void sortPageDataByUsage() async {
-    Map<PageData, int> pageUsage = await loadPageUsage();
+  void sortPageDataByUsage({loadFromPrefs = false}) async {
+    if (loadFromPrefs) {
+      pageUsage = await loadPageUsage();
+    }
 
     List<PageData> sortedPageData = pageUsage.keys.toList(growable: false)
       ..sort((a, b) => (pageUsage[b] ?? 0).compareTo(pageUsage[a] ?? 0));
@@ -83,15 +93,24 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
-  @override
-  void initState() {
-    super.initState();
+  void updatePageUsage(unitType, newUsageCount) {
+    for (PageData pageData in pageUsage.keys) {
+      if (pageData.unitType == unitType) {
+        pageUsage[pageData] = newUsageCount;
+        break;
+      }
+    }
     sortPageDataByUsage();
   }
 
   @override
+  void initState() {
+    super.initState();
+    sortPageDataByUsage(loadFromPrefs: true);
+  }
+
+  @override
   Widget build(BuildContext context) {
-    debugPrint("Build");
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
@@ -138,6 +157,7 @@ class _HomePageState extends State<HomePage> {
                                 unitType: pageInfo.unitType,
                                 title: pageInfo.title,
                                 icon: pageInfo.icon,
+                                updateUsageCallback: updatePageUsage,
                               );
                             }),
                           )
@@ -160,7 +180,7 @@ class _HomePageState extends State<HomePage> {
                             ),
                           ),
                         ),
-                        subtitle: index == 0
+                        subtitle: (index == 0 && _highestConversionCount > 0)
                             ? Container(
                                 margin: EdgeInsets.only(top: 5),
                                 decoration: BoxDecoration(
@@ -169,14 +189,13 @@ class _HomePageState extends State<HomePage> {
                                   color: Colors.green,
                                 ),
                                 child: Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Text(
-                                    "Your most used conversion!",
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.w600,
-                                        color: Colors.white),
-                                  ),
-                                ),
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Text(
+                                      "Your most used conversion!",
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.w600,
+                                          color: Colors.white),
+                                    )),
                               )
                             : null,
                         contentPadding: const EdgeInsets.all(20),

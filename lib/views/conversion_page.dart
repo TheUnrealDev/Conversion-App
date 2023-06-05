@@ -5,11 +5,13 @@ class ConversionPage extends StatefulWidget {
   final String unitType;
   final String title;
   final IconData icon;
+  final Function updateUsageCallback;
   const ConversionPage(
       {super.key,
       required this.unitType,
       required this.title,
-      required this.icon});
+      required this.icon,
+      required this.updateUsageCallback});
 
   @override
   State<ConversionPage> createState() => _ConversionPageState();
@@ -18,7 +20,10 @@ class ConversionPage extends StatefulWidget {
 class _ConversionPageState extends State<ConversionPage> {
   @override
   Widget build(BuildContext context) {
-    Widget pageContent = ConversionForm(unitType: widget.unitType);
+    Widget pageContent = ConversionForm(
+      unitType: widget.unitType,
+      updateUsageCallback: widget.updateUsageCallback,
+    );
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
