@@ -1,5 +1,6 @@
 import 'package:conversion_app/views/conversion_page.dart';
 import 'package:conversion_app/models/page_data.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/material.dart';
 
 List<PageData> pageDataList = [
@@ -55,81 +56,136 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+
+  bool isLoading = true;
+
+  Future<Map<PageData, int>> loadPageUsage() async {
+    SharedPreferences prefs = await _prefs;
+
+    Map<PageData, int> pageUsage = Map();
+    for (PageData pageData in pageDataList) {
+      int timesUsed = prefs.getInt(pageData.unitType) ?? 0;
+      pageUsage[pageData] = timesUsed;
+    }
+    return pageUsage;
+  }
+
+  void sortPageDataByUsage() async {
+    Map<PageData, int> pageUsage = await loadPageUsage();
+
+    List<PageData> sortedPageData = pageUsage.keys.toList(growable: false)
+      ..sort((a, b) => (pageUsage[b] ?? 0).compareTo(pageUsage[a] ?? 0));
+
+    setState(() {
+      isLoading = false;
+      pageDataList = sortedPageData;
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    sortPageDataByUsage();
+  }
+
   @override
   Widget build(BuildContext context) {
+    debugPrint("Build");
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
       ),
-      body: Column(
-        children: [
-          Expanded(
-            flex: 1,
-            child: Container(
-              decoration: BoxDecoration(
-                color: Theme.of(context).canvasColor,
-                boxShadow: [
-                  BoxShadow(
-                    color: Theme.of(context).primaryColor,
-                    blurRadius: 5,
-                  ),
-                ],
-              ),
-              child: const Center(
-                child: Text(
-                  "Select which conversion you want to do!",
-                  style: TextStyle(
-                    fontSize: 18,
-                    color: Colors.black,
-                  ),
-                ),
-              ),
-            ),
-          ),
-          Expanded(
-            flex: 8,
-            child: ListView.builder(
-              itemCount: pageDataList.length,
-              itemBuilder: (context, int index) {
-                PageData pageInfo = pageDataList[index];
-                return ListTile(
-                  onTap: () => {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) {
-                        return ConversionPage(
-                          unitType: pageInfo.unitType,
-                          title: pageInfo.title,
-                          icon: pageInfo.icon,
-                        );
-                      }),
-                    )
-                  },
-                  leading: Hero(
-                    tag: "${pageInfo.title} icon",
-                    child: Icon(
-                      pageInfo.icon,
-                      color: Theme.of(context).primaryColorDark,
-                      size: 40,
+      body: isLoading
+          ? Center(child: CircularProgressIndicator())
+          : Column(
+              children: [
+                Expanded(
+                  flex: 1,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).canvasColor,
+                      boxShadow: [
+                        BoxShadow(
+                          color: Theme.of(context).primaryColor,
+                          blurRadius: 5,
+                        ),
+                      ],
                     ),
-                  ),
-                  title: Hero(
-                    tag: "${pageInfo.title} title",
-                    child: Text(
-                      pageInfo.title,
-                      style: TextStyle(
-                        color: Theme.of(context).primaryColor,
-                        fontWeight: FontWeight.w600,
+                    child: const Center(
+                      child: Text(
+                        "Select which conversion you want to do!",
+                        style: TextStyle(
+                          fontSize: 18,
+                          color: Colors.black,
+                        ),
                       ),
                     ),
                   ),
-                  contentPadding: const EdgeInsets.all(20),
-                );
-              },
+                ),
+                Expanded(
+                  flex: 8,
+                  child: ListView.builder(
+                    itemCount: pageDataList.length,
+                    itemBuilder: (context, int index) {
+                      PageData pageInfo = pageDataList[index];
+                      return ListTile(
+                        onTap: () => {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) {
+                              return ConversionPage(
+                                unitType: pageInfo.unitType,
+                                title: pageInfo.title,
+                                icon: pageInfo.icon,
+                              );
+                            }),
+                          )
+                        },
+                        leading: Hero(
+                          tag: "${pageInfo.title} icon",
+                          child: Icon(
+                            pageInfo.icon,
+                            color: Theme.of(context).primaryColorDark,
+                            size: 40,
+                          ),
+                        ),
+                        title: Hero(
+                          tag: "${pageInfo.title} title",
+                          child: Text(
+                            pageInfo.title,
+                            style: TextStyle(
+                              color: Theme.of(context).primaryColor,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        ),
+                        subtitle: index == 0
+                            ? Container(
+                                margin: EdgeInsets.only(top: 5),
+                                decoration: BoxDecoration(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(8.0)),
+                                  color: Colors.green,
+                                ),
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Text(
+                                    "Your most used conversion!",
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.w600,
+                                        color: Colors.white),
+                                  ),
+                                ),
+                              )
+                            : null,
+                        contentPadding: const EdgeInsets.all(20),
+                      );
+                    },
+                  ),
+                ),
+              ],
             ),
-          ),
-        ],
-      ),
     );
   }
 }

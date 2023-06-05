@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:select_form_field/select_form_field.dart';
-import '../../models/number_validator.dart';
-import '../../models/unit_converter.dart';
-import '../../models/units/units.dart';
+import '../models/number_validator.dart';
+import '../models/unit_converter.dart';
+import '../models/units/units.dart';
 
 class ConversionForm extends StatefulWidget {
   final String unitType;
@@ -19,6 +20,8 @@ class ConversionForm extends StatefulWidget {
 class _ConversionFormState extends State<ConversionForm> {
   final _formKey = GlobalKey<FormState>();
 
+  final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+
   final TextStyle _dropdownTextStyle = const TextStyle(fontSize: 20);
   final TextStyle _resultTextStyle = const TextStyle(fontSize: 20);
   final _valueToConvertController = TextEditingController();
@@ -32,6 +35,7 @@ class _ConversionFormState extends State<ConversionForm> {
       widget.units.length < 2 ? '' : widget.units.elementAt(1)['value'];
 
   String _convertedUnitString = '';
+  String _previousNumberVal = '';
 
   void swapToAndFromUnits() {
     setState(
@@ -102,6 +106,16 @@ class _ConversionFormState extends State<ConversionForm> {
     convertChosenUnits();
   }
 
+  void updateConversionCount(newValue) async {
+    if (_previousNumberVal.isEmpty) {
+      SharedPreferences prefs = await _prefs;
+      int conversionCount = prefs.getInt(widget.unitType) ?? 0;
+      prefs.setInt(widget.unitType, conversionCount + 1);
+      debugPrint((conversionCount + 1).toString());
+    }
+    _previousNumberVal = newValue;
+  }
+
   @override
   Widget build(BuildContext context) {
     final Icon drowDownSuffix = Icon(
@@ -143,6 +157,7 @@ class _ConversionFormState extends State<ConversionForm> {
                           decoration: const InputDecoration(
                               hintText: 'Input your number.'),
                           onChanged: (value) {
+                            updateConversionCount(value);
                             setState(() {});
                           },
                         ),
