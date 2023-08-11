@@ -164,7 +164,7 @@ class _UnitTypeListState extends State<UnitTypeList> {
                           decoration: BoxDecoration(
                             borderRadius:
                                 BorderRadius.all(Radius.circular(8.0)),
-                            color: Colors.green,
+                            color: Theme.of(context).primaryColor,
                           ),
                           child: Padding(
                               padding: const EdgeInsets.all(8.0),

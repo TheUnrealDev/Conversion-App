@@ -1,4 +1,5 @@
 import 'package:conversion_app/models/unit_type_list.dart';
+import 'package:conversion_app/views/settings_page.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {
@@ -44,6 +45,23 @@ class _HomePageState extends State<HomePage> {
           ),
           UnitTypeList(),
         ],
+      ),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: () => {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) {
+                return SettingsPage();
+              },
+            ),
+          )
+        },
+        icon: Icon(
+          Icons.settings,
+          size: 30,
+        ),
+        label: Text("Settings"),
       ),
     );
   }
