@@ -18,14 +18,12 @@ class ThemeProvider extends ChangeNotifier {
     if (savedTheme == null) {
       return;
     }
-    debugPrint('Loaded ' + savedThemeName);
     _theme = savedTheme;
   }
 
   void saveTheme(ThemeData newTheme) {
     String themeName = getThemeNameFromThemeData(newTheme);
     MyApp.mainPrefs?.setString('UserTheme', themeName);
-    debugPrint('Saved ' + themeName);
   }
 
   void changeTheme(ThemeData newTheme) {

@@ -66,17 +66,6 @@ class _SettingsPageState extends State<SettingsPage> {
                     ],
                   ),
                 )
-                /*SelectFormField(
-                  initialValue: getThemeNameFromThemeData(Theme.of(context)),
-                  type: SelectFormFieldType.dialog,
-                  items: selectableThemes,
-                  onChanged: (newThemeName) {
-                    ThemeData? newTheme = getThemeFromThemeName(newThemeName);
-                    if (newTheme != null) {
-                      themeProvider.changeTheme(newTheme);
-                    }
-                  },
-                ),*/
               ],
             ),
           ),

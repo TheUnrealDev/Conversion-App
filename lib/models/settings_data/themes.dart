@@ -74,7 +74,6 @@ String getThemeNameFromThemeData(ThemeData theme) {
       break;
     }
   }
-  debugPrint(themeName);
   return themeName;
 }
 
